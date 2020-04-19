@@ -1,0 +1,37 @@
+#ifndef DEF_WORLD_H
+#define DEF_WORLD_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+typedef enum {
+    ZERO = 0,
+    ZERO_CARRY,
+    ONE,
+    ONE_CARRY
+} CellType;
+
+typedef struct {
+    int bit;
+    int carry;
+} Cell;
+
+Cell cell_type_to_cell(CellType ct);
+CellType cell_to_cell_type(Cell c);
+
+typedef struct {
+    Cell** cells;
+    int* col_size;
+    int* col_start;
+    int height, width;
+} World;
+
+World new_world(int height, int width);
+void free_world(World w);
+
+int valid_column(CellType* column, int column_size);
+void init_world(World w, CellType* column, int column_size);
+
+void run_world(World w);
+#endif
