@@ -1,7 +1,7 @@
 CC=gcc
 LIBS=-lm -lncurses
 LIBS_ALLEGRO=-lallegro -lallegro_primitives -lallegro_font -lallegro_image -lallegro_ttf -lallegro_dialog
-FILES=world.c collatz.c graphic_engine.c engines/*.c 
+FILES=arguments.c world.c collatz.c graphic_engine.c engines/*.c 
 INC=$(shell pwd)
 
 main: $(FILES) main.c
