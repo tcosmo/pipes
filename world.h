@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 typedef enum {
     ZERO = 0,
@@ -34,4 +35,6 @@ int valid_column(CellType* column, int column_size);
 void init_world(World w, CellType* column, int column_size);
 
 void run_world(World w);
+int check_world(World w, int print);
+
 #endif

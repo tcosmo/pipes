@@ -1,9 +1,11 @@
 CC=gcc
-LIBS=-lncurses
+LIBS=-lm -lncurses
+LIBS_ALLEGRO=-lallegro -lallegro_primitives -lallegro_font -lallegro_image -lallegro_ttf -lallegro_dialog
+FILES=world.c collatz.c graphic_engine.c engines/*.c 
 INC=$(shell pwd)
 
-main: world.c graphic_engine.c engines/*.c main.c 
-	$(CC) -o build/a.out world.c graphic_engine.c engines/*.c main.c $(LIBS) -I ${INC}
-tests: world.c graphic_engine.c engines/*.c tests.c
-	$(CC) -o build/tests.out world.c graphic_engine.c engines/*.c tests.c $(LIBS) -I ${INC}
+main: $(FILES) main.c
+	$(CC) -o build/a.out $(FILES) $(LIBS) $(LIBS_ALLEGRO) main.c -I ${INC}
+tests: $(FILES) tests.c
+	$(CC) -o $(FILES) tests.c $(LIBS) $(LIBS_ALLEGRO) -I ${INC}
 	./build/tests.out

@@ -11,6 +11,7 @@ void* engine_new(GraphicEngineType engine_type, World w) {
         break;
 
         case ALLEGRO:
+        return allegro_engine_new(w);
         break;
     }
 }
@@ -26,6 +27,7 @@ void engine_init(void* graphic_engine, GraphicEngineType engine_type) {
         break;
 
         case ALLEGRO:
+        allegro_engine_init(graphic_engine);
         break;
     }
 }
@@ -41,6 +43,7 @@ void engine_run(void* graphic_engine, GraphicEngineType engine_type) {
         break;
 
         case ALLEGRO:
+        allegro_engine_run(graphic_engine);
         break;
     }
 }
@@ -56,6 +59,7 @@ void engine_die(void* graphic_engine, GraphicEngineType engine_type) {
         break;
 
         case ALLEGRO:
+        allegro_engine_die(graphic_engine);
         break;
     }
 }

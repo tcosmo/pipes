@@ -1,4 +1,5 @@
 #include "world.h"
+#include "collatz.h"
 
 const int CELL_ACTION[4][2] = {{0,0},{0,1},{1,0},{1,1}};
 const CellType ACTION_CELL[2][2] = {{ZERO, ZERO_CARRY}, {ONE, ONE_CARRY}};
@@ -26,14 +27,11 @@ void free_world(World w) {
 }
 
 int valid_column(CellType* column, int column_size) {
-    
     int reading_zero_carry = 0;
     int reading_one = 0;
-    
     for( int i = 0 ; i < column_size ; i += 1) {
-    
         CellType curr = column[i];
-        
+    
         if( reading_zero_carry && !(curr == ZERO_CARRY || curr == ZERO) )
             return 0;
 
@@ -101,5 +99,62 @@ void run_world(World w) {
         w.col_size[i_col] = my_end - w.col_start[i_col];
         //fprintf(stderr, "%d\n", w.col_size[i_col]);
     }
+}
 
+int cell_type_to_trit(CellType ct) {
+    switch( ct ) {
+        case ZERO:
+        return 0;
+
+        case ZERO_CARRY:
+        return 1;
+
+        case ONE:
+        return 1;
+
+        case ONE_CARRY:
+        return 2;
+    }
+}
+
+int number_in_col(World w, int i_col) {
+    /* Does base 3p to base 3 conversion */
+    int row_begin = w.col_start[i_col];
+    int row_end = row_begin+w.col_size[i_col];
+
+    int number = 0;
+    int k = 0;
+    for( int y = row_end-1; y >= row_begin ; y -= 1 ) {
+        int trit = cell_type_to_trit(cell_to_cell_type(w.cells[y][i_col]));
+        int mult = (int)(pow(3,k));
+        number += trit*mult;
+        k += 1;
+    }
+
+    return number;
+}
+
+int check_world(World w, int print) {
+    int cs[w.width];
+
+    if(print)
+        fprintf(stderr,"CS len: %d\nCS:\n", w.width);
+
+    int k = 0;
+    for(int i_col = w.width-1; i_col >= 0; i_col -= 1) {
+        cs[k] = number_in_col(w,i_col);
+        if(print) {
+            fprintf(stderr, "%d", cs[k]);
+            if( i_col != 0)
+                fprintf(stderr,",");
+        }
+        k += 1;
+    }
+
+    if(print)
+        fprintf(stderr,"\n");
+
+    int to_return = is_valid_CS(cs, w.width);
+
+    return to_return;
 }

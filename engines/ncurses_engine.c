@@ -57,9 +57,6 @@ void print_world(NcursesEngine* engine) {
 
 void ncurses_engine_run(NcursesEngine* engine) {
 
-    fprintf(stderr, "%d %d\n", engine->max_y, engine->max_x);
-    fprintf(stderr, "%s\n", cell_to_str(engine->w.cells[0][engine->w.width-1]));
-
     while(1) {
         erase();
         print_world(engine);

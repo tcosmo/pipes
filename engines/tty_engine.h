@@ -1,7 +1,7 @@
 #ifndef DEF_TTY_ENGINE_H
 #define DEF_TTY_ENGINE_H
 
-#include "graphic_engine.h"
+#include "world.h"
 
 typedef struct {
     World w;

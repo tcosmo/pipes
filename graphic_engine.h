@@ -4,6 +4,7 @@
 #include "world.h"
 #include "engines/tty_engine.h"
 #include "engines/ncurses_engine.h"
+#include "engines/allegro_engine.h"
 
 typedef enum {
     TTY = 0,
