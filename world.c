@@ -9,9 +9,15 @@ World new_world(int height, int width) {
     w.height = height;
     w.width = width;
 
+    w.border = (unsigned char*) calloc(w.width, sizeof(unsigned char));
+
     w.cells = (Cell**) calloc(w.height, sizeof(Cell*));
     for( int y = 0 ; y < w.height ; y += 1)
         w.cells[y] = (Cell*) calloc(w.width, sizeof(Cell));
+
+    w.defined = (char**) calloc(w.height, sizeof(char*));
+    for( int y = 0 ; y < w.height ; y += 1)
+        w.defined[y] = (char*) calloc(w.width, sizeof(char));
 
     w.col_size = (int*) calloc(w.width, sizeof(int));
     w.col_start = (int*) calloc(w.width, sizeof(int));
@@ -19,8 +25,12 @@ World new_world(int height, int width) {
 }
 
 void free_world(World w) {
-    for( int y = 0 ; y < w.height ; y += 1)
+    for( int y = 0 ; y < w.height ; y += 1) {
         free(w.cells[y]);
+        free(w.defined[y]);
+    }
+    free(w.border);
+    free(w.defined);
     free(w.cells);
     free(w.col_size);
     free(w.col_start);
@@ -157,4 +167,14 @@ int check_world(World w, int print) {
     int to_return = is_valid_CS(cs, w.width);
 
     return to_return;
+}
+
+int is_position_valid(World w, int x, int y)
+{
+    return (0 <= x && x < w.width) && (0 <= y && y < w.height);
+}
+
+void increase_border(World w, int x)
+{
+    w.border[x] = (w.border[x]+1)%3;
 }

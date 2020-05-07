@@ -23,6 +23,8 @@ CellType cell_to_cell_type(Cell c);
 
 typedef struct {
     Cell** cells;
+    char** defined;
+    unsigned char* border;
     int* col_size;
     int* col_start;
     int height, width;
@@ -36,5 +38,8 @@ void init_world(World w, CellType* column, int column_size);
 
 void run_world(World w);
 int check_world(World w, int print);
+
+int is_position_valid(World w, int x, int y);
+void increase_border(World w, int x);
 
 #endif
