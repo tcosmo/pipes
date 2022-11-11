@@ -4,12 +4,18 @@
 const int CELL_ACTION[4][2] = {{0,0},{0,1},{1,0},{1,1}};
 const CellType ACTION_CELL[2][2] = {{ZERO, ZERO_CARRY}, {ONE, ONE_CARRY}};
 
-World new_world(int height, int width) {
+World new_world(int height, int width, char* border) {
     World w;
     w.height = height;
     w.width = width;
 
     w.border = (unsigned char*) calloc(w.width, sizeof(unsigned char));
+
+    int border_len = strlen(border);
+    assert(border_len <= width);
+
+    for(int x = 0 ; x < border_len ; x += 1)
+        w.border[x] = border[x]-'0';
 
     w.cells = (Cell**) calloc(w.height, sizeof(Cell*));
     for( int y = 0 ; y < w.height ; y += 1)

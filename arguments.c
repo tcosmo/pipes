@@ -10,6 +10,7 @@ Arguments default_arguments() {
     Arguments arguments;
     arguments.verbose = false;
     arguments.engine_type = NCURSES; // default to stdout
+    arguments.border = "\0";
     return arguments;
 }
 
@@ -29,6 +30,9 @@ static error_t parse_option( int key, char *arg, struct argp_state *state ) {
             arguments->engine_type = ALLEGRO;
         else
             arguments->engine_type = TTY;        
+        break;
+    case 'b':
+        arguments->border = arg;
         break;
     default:
         return ARGP_ERR_UNKNOWN;

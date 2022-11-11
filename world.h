@@ -30,7 +30,7 @@ typedef struct {
     int height, width;
 } World;
 
-World new_world(int height, int width);
+World new_world(int height, int width, char* border);
 void free_world(World w);
 
 int valid_column(CellType* column, int column_size);

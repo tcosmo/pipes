@@ -13,6 +13,7 @@
 #define WHITE al_map_rgb(255,255,255)
 #define GREEN al_map_rgb(50,255,50)
 #define PINK al_map_rgb(255,44,180)
+#define BLUE al_map_rgb(30,44,230)
 
 typedef struct {
     float x, y;
@@ -43,6 +44,7 @@ typedef struct {
     ALLEGRO_FONT* arial72 ;
     ALLEGRO_EVENT_QUEUE *event_queue;
     int cursor_x, cursor_y;
+    char* duplicate_border;
 } AllegroEngine;
 
 AllegroEngine* allegro_engine_new(World w);

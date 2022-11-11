@@ -8,6 +8,8 @@ const char* TWO_P_60 = "32300102233333031103222330232223323101";
 const char* TWO_P_78 = "10310033010333333102333111002331011101011100310101";
 const char* INPUT_COL = "33";//"333333333333333";//"10310231023223";//"322323222222311003331003";
 
+//border: 112122221122221 ; 112121221122221
+
 int main( int argc, char *argv[] ) {
     Arguments arguments = default_arguments();
     parse_arguments(argc, argv, &arguments);
@@ -17,7 +19,7 @@ int main( int argc, char *argv[] ) {
 
     if( VERBOSE )
         fprintf(stderr, "Let's get rolling..\n");
-    World w = new_world(15,15);
+    World w = new_world(15,15,arguments.border);
 
     int col0_length = strlen(INPUT_COL);
     CellType* col0 = chars_to_3p(INPUT_COL);

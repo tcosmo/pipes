@@ -11,12 +11,14 @@ enum options_with_no_short_option {
 static struct argp_option options[] = {
     { "verbose", OPTION_VERBOSE, 0, 0, "Enable verbose logging" },
     { "engine", 'e', "ENGINE", 0, "Choosing the graphic engine: `tty`, `ncurses` (default) or `allegro`" },
+    { "border", 'b', "BORDER", 0, "Specify the parity vector/border of the world"},
     { 0 }
 };
 
 typedef struct {
     bool verbose;
     GraphicEngineType engine_type;
+    char* border;
 } Arguments;
 
 Arguments default_arguments();

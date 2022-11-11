@@ -4,7 +4,7 @@ AllegroEngine* allegro_engine_new(World w) {
     AllegroEngine* engine = (AllegroEngine*)malloc(sizeof(AllegroEngine));
     engine->is_running = 1;
     engine->w = w;
-
+    engine->duplicate_border = (char*)calloc(w.height,sizeof(char));
     engine->cursor_x = 0;
     engine->cursor_y = w.height-1;
 
@@ -268,21 +268,37 @@ void move_cursor(AllegroEngine* engine, int d_x, int d_y) {
     engine->cursor_y = new_c_y;
 }
 
-void render_world_border(AllegroEngine* engine) {
+void render_world_border(AllegroEngine* engine, int o_y, ALLEGRO_COLOR color) {
+    int nb_2 = 0;
+
     for( int i_col = 0 ; i_col < engine->w.width ; i_col += 1 ) {
         char c = engine->w.border[i_col];
         if( !c ) continue;
         if( c >= 1 )
             al_draw_line((i_col)*engine->cell_w, 
-                            (engine->w.height)*engine->cell_h, 
-                    (i_col+1)*engine->cell_w, engine->w.height*engine->cell_h,
-                    PINK, 5);
-        if( c == 2 )
+                         (o_y+1-nb_2)*engine->cell_h, 
+                    (i_col+1)*engine->cell_w, (o_y+1-nb_2)*engine->cell_h,
+                    color, 5);
+        if( c == 2 ) {
             al_draw_line((i_col+1)*engine->cell_w, 
-                            (engine->w.height-1)*engine->cell_h, 
-                    (i_col+1)*engine->cell_w, engine->w.height*engine->cell_h,
-                    PINK, 5);
+                            (o_y-nb_2)*engine->cell_h, 
+                    (i_col+1)*engine->cell_w, (o_y+1-nb_2)*engine->cell_h,
+                    color, 5);
+            nb_2 += 1;
+        }
     }
+}
+
+void print_border(AllegroEngine* engine) {
+    for( int x = 0 ; x < engine->w.width ; x += 1 )
+        printf("%c", engine->w.border[x]+'0');
+    printf("\n");
+}
+
+void render_world_border_duplicates(AllegroEngine* engine) {
+    for(int y = 0 ; y < engine->w.height ; y += 1)
+        if(engine->duplicate_border[y])
+            render_world_border(engine, y, BLUE);
 }
 
 void allegro_engine_run(AllegroEngine* engine) {
@@ -297,7 +313,8 @@ void allegro_engine_run(AllegroEngine* engine) {
         render_world_grid(engine);
         render_cursor(engine);
         render_world_symbol(engine);
-        render_world_border(engine);
+        render_world_border(engine,engine->w.height-1, PINK);
+        render_world_border_duplicates(engine);
         al_flip_display();
 
         ALLEGRO_EVENT event;
@@ -308,6 +325,12 @@ void allegro_engine_run(AllegroEngine* engine) {
                 case ALLEGRO_KEY_B: 
                     increase_border(engine->w, engine->cursor_x); 
                     break;
+                case ALLEGRO_KEY_D: 
+                    engine->duplicate_border[engine->cursor_y] = 
+                    1-engine->duplicate_border[engine->cursor_y];
+                    break;
+                case ALLEGRO_KEY_P:
+                    print_border(engine); break;
             }
         }
 
@@ -335,5 +358,6 @@ void allegro_engine_die(AllegroEngine* engine) {
         free(engine->world_motifs[i_row]);
 
     free(engine->world_motifs);
+    free(engine->duplicate_border);
     free(engine);
 }

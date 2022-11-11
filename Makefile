@@ -5,7 +5,7 @@ FILES=arguments.c world.c collatz.c graphic_engine.c engines/*.c
 INC=$(shell pwd)
 
 main: $(FILES) main.c
-	$(CC) -o build/a.out $(FILES) $(LIBS) $(LIBS_ALLEGRO) main.c -I ${INC}
+	$(CC) -o a.out $(FILES) $(LIBS) $(LIBS_ALLEGRO) main.c -I ${INC}
 tests: $(FILES) tests.c
 	$(CC) -o $(FILES) tests.c $(LIBS) $(LIBS_ALLEGRO) -I ${INC}
 	./build/tests.out
